@@ -12,7 +12,7 @@ public:
 
   virtual void handle_input() = 0;
 
-  virtual void compute() = 0;
+  virtual void compute(float dt) = 0;
 
   virtual void display() = 0;
 };

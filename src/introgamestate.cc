@@ -23,7 +23,9 @@ void IntroGameState::init(Engine* engine)
   engine_ = engine;
   screen_ = engine_->get_screen();
 
-  title_ = IMG_Load("data/images/title.png");
+  SDL_Surface* title = IMG_Load("data/images/title.png");
+  title_ = SDL_DisplayFormat(title);
+  SDL_FreeSurface(title);
 }
 
 void IntroGameState::handle_input()
@@ -52,7 +54,7 @@ void IntroGameState::handle_input()
   }
 }
 
-void IntroGameState::compute()
+void IntroGameState::compute(float dt)
 {
 }
 

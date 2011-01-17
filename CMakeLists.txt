@@ -39,6 +39,7 @@ set(SOURCE_FILES
   src/introgamestate.cc
   src/main.cc
   src/playgamestate.cc
+  src/timer.cc
 )
 
 add_executable(pong

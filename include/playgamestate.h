@@ -16,7 +16,7 @@ public:
 
   void handle_input();
 
-  void compute();
+  void compute(float dt);
 
   void display();
 
@@ -31,9 +31,13 @@ private:
 
   int paddle2_;
 
-  int ball_x_;
+  float ball_x_;
 
-  int ball_y_;
+  float ball_y_;
+
+  float ball_x_speed_;
+
+  float ball_y_speed_;
 };
 
 #endif

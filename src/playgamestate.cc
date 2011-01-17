@@ -12,8 +12,10 @@ PlayGameState::PlayGameState()
     screen_(0),
     paddle1_(0),
     paddle2_(0),
-    ball_x_(0),
-    ball_y_(0)
+    ball_x_(0.0),
+    ball_y_(0.0),
+    ball_x_speed_(0.0),
+    ball_y_speed_(0.0)
 {
 }
 
@@ -29,10 +31,15 @@ void PlayGameState::init(Engine* engine)
   engine_ = engine;
   screen_ = engine_->get_screen();
 
-  playfield_ = IMG_Load("data/images/playfield.png");
+  SDL_Surface* playfield = IMG_Load("data/images/playfield.png");
+  playfield_ = SDL_DisplayFormat(playfield);
+  SDL_FreeSurface(playfield);
 
   SDL_WarpMouse(400, 300);
   SDL_WM_GrabInput(SDL_GRAB_ON);
+
+  ball_x_speed_ = 100.0;
+  ball_y_speed_ = 20.0;
 }
 
 void PlayGameState::handle_input()
@@ -70,9 +77,10 @@ void PlayGameState::handle_input()
   }
 }
 
-void PlayGameState::compute()
+void PlayGameState::compute(float dt)
 {
-  // compute ball and ai player
+  ball_x_ += ball_x_speed_ * dt;
+  ball_y_ += ball_y_speed_ * dt;
 }
 
 void PlayGameState::display()
@@ -85,12 +93,19 @@ void PlayGameState::display()
 
   Uint32 white = SDL_MapRGB(screen_->format, 255, 255, 255);
 
+  // Paddle 1
   SDL_Rect paddle1_rect = {64, 300 - 32 + paddle1_, 16, 64};
   SDL_FillRect(screen_, &paddle1_rect, white);
 
+  // Paddle 2
   SDL_Rect paddle2_rect = {720, 300 - 32 + paddle2_, 16, 64};
   SDL_FillRect(screen_, &paddle2_rect, white);
 
+  // Ball
+  SDL_Rect ball_rect = { 400 + ball_x_ - 8, 300 + ball_y_ - 8, 16, 16 };
+  SDL_FillRect(screen_, &ball_rect, white);
+
+  // Flip screen
   SDL_ShowCursor(SDL_DISABLE);
   SDL_Flip(screen_);
 }

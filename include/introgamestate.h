@@ -16,7 +16,7 @@ public:
 
   void handle_input();
 
-  void compute();
+  void compute(float dt);
 
   void display();
 

@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "gamestate.h"
+#include "timer.h"
 
 Engine::Engine()
   : running_(false),
@@ -44,7 +45,15 @@ void Engine::next_state(GameState* state)
 
 void Engine::start()
 {
+  const float dt = 0.01;
+  
   running_ = true;
+
+  Timer timer;
+  float accu = 0.0;
+  
+  float fi = 0.0;
+  int fc = 0;
 
   while (running_) {
     if (next_) {
@@ -58,8 +67,30 @@ void Engine::start()
       next_ = 0;
     }
 
+    // add delta time
+    float delta = timer.delta();
+    accu += delta;
+    fi += delta;
+
+    // handle input
     current_->handle_input();
+
+    // update the state
+    while (accu >= dt) {
+      current_->compute(dt);
+      accu -= dt;
+    }
+
+    // display
     current_->display();
+
+    // fps
+    fc++;
+    if (fi >= 5.0) {
+      std::cout << "FPS: " << (fc / 5.0) << "\n";
+      fi -= 5.0;
+      fc = 0;
+    }
   }
 }
 
