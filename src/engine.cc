@@ -23,6 +23,8 @@ Engine::Engine()
   }
 
   SDL_WM_SetCaption("Pong", NULL);
+
+  running_ = true;
 }
 
 Engine::~Engine()
@@ -55,13 +57,10 @@ void Engine::start()
   int frame_count = 0;
   uint32_t frame_count_millis = timer.millis();
 
-  running_ = true;
   while (running_) {
     if (next_) {
-      std::cout << "has next\n";
       if (current_) {
         delete current_;
-        std::cout << "deleting current\n";
       }
       current_ = next_;
       current_->init(this);

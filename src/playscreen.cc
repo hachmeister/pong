@@ -32,8 +32,8 @@ void PlayScreen::init(Engine* engine)
   SDL_WarpMouse(400, 300);
   SDL_WM_GrabInput(SDL_GRAB_ON);
 
-  state_.ball_x_speed = 100.0;
-  state_.ball_y_speed = 20.0;
+  state_.speed(150.0f);
+  state_.angle(195.0f);
 }
 
 void PlayScreen::handle_input()
@@ -100,7 +100,7 @@ void PlayScreen::display(float delta, float interpolation)
   SDL_FillRect(screen_, &paddle2_rect, white);
 
   // Ball
-  SDL_Rect ball_rect = { 400 + state.ball_x - 8, 300 + state.ball_y - 8, 16, 16 };
+  SDL_Rect ball_rect = { 400 + state.ball_pos_x - 8, 300 + state.ball_pos_y - 8, 16, 16 };
   SDL_FillRect(screen_, &ball_rect, white);
 
   // Flip screen
