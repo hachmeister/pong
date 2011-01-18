@@ -11,21 +11,20 @@ Timer::~Timer()
 {
 }
 
-float Timer::delta()
+uint32_t Timer::millis()
 {
   uint64_t now = nanos();
-  float delta = (now - start_) / 1e9;
-  start_ = now;
-  return delta;
+  uint32_t millis = (now - start_) / 1e6;
+  return millis;
 }
 
 // private methods
 
 uint64_t Timer::nanos()
 {
-  timespec time;
-  if (clock_gettime(CLOCK_REALTIME, &time) != 0) {
+  timespec ts;
+  if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0) {
     return 0;
   }
-  return time.tv_sec * 1e9 + time.tv_nsec;
+  return ts.tv_sec * 1e9 + ts.tv_nsec;
 }

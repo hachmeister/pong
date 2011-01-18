@@ -1,9 +1,9 @@
 #include "engine.h"
-#include "introgamestate.h"
+#include "introscreen.h"
 
 int main()
 {
   Engine engine;
-  engine.next_state(new IntroGameState());
+  engine.next_state(new IntroScreen());
   engine.start();
 }

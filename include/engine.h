@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-class GameState;
+class Screen;
 
 class Engine
 {
@@ -12,7 +12,7 @@ public:
 
   ~Engine();
 
-  void next_state(GameState* state);
+  void next_state(Screen* screen);
 
   void start();
 
@@ -25,9 +25,9 @@ private:
 
   SDL_Surface* screen_;
 
-  GameState* current_;
+  Screen* current_;
 
-  GameState* next_;
+  Screen* next_;
 };
 
 #endif

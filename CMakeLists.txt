@@ -36,9 +36,10 @@ set(HEADER_FILES
 
 set(SOURCE_FILES
   src/engine.cc
-  src/introgamestate.cc
+  src/introscreen.cc
   src/main.cc
-  src/playgamestate.cc
+  src/playscreen.cc
+  src/playstate.cc
   src/timer.cc
 )
 

@@ -1,24 +1,24 @@
-#include "introgamestate.h"
+#include "introscreen.h"
 
 #include <iostream>
 
 #include <SDL_image.h>
 
 #include "engine.h"
-#include "playgamestate.h"
+#include "playscreen.h"
 
-IntroGameState::IntroGameState()
+IntroScreen::IntroScreen()
   : engine_(0),
     screen_(0)
 {
 }
 
-IntroGameState::~IntroGameState()
+IntroScreen::~IntroScreen()
 {
   SDL_FreeSurface(title_);
 }
 
-void IntroGameState::init(Engine* engine)
+void IntroScreen::init(Engine* engine)
 {
   engine_ = engine;
   screen_ = engine_->get_screen();
@@ -28,7 +28,7 @@ void IntroGameState::init(Engine* engine)
   SDL_FreeSurface(title);
 }
 
-void IntroGameState::handle_input()
+void IntroScreen::handle_input()
 {
   SDL_Event event;
 
@@ -41,7 +41,7 @@ void IntroGameState::handle_input()
             engine_->quit();
             break;
           case SDLK_SPACE:
-            engine_->next_state(new PlayGameState());
+            engine_->next_state(new PlayScreen());
           default:
             break;
         }
@@ -54,11 +54,11 @@ void IntroGameState::handle_input()
   }
 }
 
-void IntroGameState::compute(float dt)
+void IntroScreen::update(float delta)
 {
 }
 
-void IntroGameState::display()
+void IntroScreen::display(float delta, float interpolation)
 {
   SDL_Rect rect;
   rect.x = 0;

@@ -10,7 +10,7 @@ class Timer
 
     ~Timer();
 
-    float delta();
+    uint32_t millis();
 
   private:
     uint64_t nanos();

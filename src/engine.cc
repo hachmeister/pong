@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "gamestate.h"
+#include "screen.h"
 #include "timer.h"
 
 Engine::Engine()
@@ -34,27 +34,28 @@ Engine::~Engine()
   SDL_Quit();
 }
 
-void Engine::next_state(GameState* state)
+void Engine::next_state(Screen* screen)
 {
   if (next_) {
     delete next_;
   }
 
-  next_ = state;
+  next_ = screen;
 }
 
 void Engine::start()
 {
-  const float dt = 0.01;
-  
-  running_ = true;
+  const uint32_t GAME_SPEED = 25;
+  const uint32_t UPDATE_INTERVAL = 1000 / GAME_SPEED;
 
   Timer timer;
-  float accu = 0.0;
-  
-  float fi = 0.0;
-  int fc = 0;
+  uint32_t next_update = timer.millis();
+  float interpolation = 0.0;
 
+  int frame_count = 0;
+  uint32_t frame_count_millis = timer.millis();
+
+  running_ = true;
   while (running_) {
     if (next_) {
       std::cout << "has next\n";
@@ -67,29 +68,25 @@ void Engine::start()
       next_ = 0;
     }
 
-    // add delta time
-    float delta = timer.delta();
-    accu += delta;
-    fi += delta;
-
     // handle input
     current_->handle_input();
 
     // update the state
-    while (accu >= dt) {
-      current_->compute(dt);
-      accu -= dt;
+    while (timer.millis() >= next_update) {
+      current_->update(UPDATE_INTERVAL / 1000.0);
+      next_update += UPDATE_INTERVAL;
     }
 
     // display
-    current_->display();
+    interpolation = float(timer.millis() + UPDATE_INTERVAL - next_update) / float(UPDATE_INTERVAL);
+    current_->display(UPDATE_INTERVAL / 1000.0, interpolation);
 
     // fps
-    fc++;
-    if (fi >= 5.0) {
-      std::cout << "FPS: " << (fc / 5.0) << "\n";
-      fi -= 5.0;
-      fc = 0;
+    frame_count++;
+    if (timer.millis() >= frame_count_millis + 5000) {
+      std::cout << "FPS: " << (frame_count / 5) << "\n";
+      frame_count_millis = timer.millis();
+      frame_count = 0;
     }
   }
 }
