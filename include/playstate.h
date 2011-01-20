@@ -33,6 +33,8 @@ public:
 private:
   void compute();
 
+  float update_ball_pos(float delta);
+
   bool has_changed_;
 
   float ball_speed_;

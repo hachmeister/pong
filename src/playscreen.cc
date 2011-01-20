@@ -32,7 +32,7 @@ void PlayScreen::init(Engine* engine)
   SDL_WarpMouse(400, 300);
   SDL_WM_GrabInput(SDL_GRAB_ON);
 
-  state_.speed(150.0f);
+  state_.speed(250.0f);
   state_.angle(195.0f);
 }
 
