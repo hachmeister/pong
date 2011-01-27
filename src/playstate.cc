@@ -42,6 +42,14 @@ void PlayState::update(float delta)
     compute();
   }
 
+  // computer paddle
+  if (ball_speed_x > 0.0f) {
+    paddle2 += ((ball_pos_y + 300.0f) - (paddle2 + 300.0f)) * 7.0f * pow((ball_pos_x + 400.0f) / 1200.0f, 2.5f);
+  }
+  else {
+    paddle2 += (300.0f - (paddle2 + 300.0f)) * pow(400.0f / 1200.0f, 3.0f);
+  }
+
   float temp_delta = delta;
   while (temp_delta > 0.0f) {
     temp_delta = update_ball_pos(temp_delta);
@@ -80,8 +88,6 @@ void PlayState::compute()
 
 float PlayState::update_ball_pos(float delta)
 {
-  //std::cout << "--------\n";
-
   float delta_for_update = delta;
   bool collision = false;
 
@@ -92,44 +98,67 @@ float PlayState::update_ball_pos(float delta)
   float delta_y = fabs(new_ball_pos_y - ball_pos_y);
   float new_angle = 0.0f;
 
-  /*
-  std::cout << "old x: " << ball_pos_x << "; old y: " << ball_pos_y << "\n";
-  std::cout << "temp x: " << new_ball_pos_x << "; temp y: " << new_ball_pos_y << "\n";
-  std::cout << "delta_x: " << fabs(new_ball_pos_x - ball_pos_x) << "; delta_y: " << fabs(new_ball_pos_y - ball_pos_y) << "\n";
-  std::cout << "delta2_x: " << (312.0f - fabs(ball_pos_x)) << "; delta2_y: " << (224.0f - fabs(ball_pos_y)) << "\n";
-  */
-
   if (ball_pos_x >= -312.0f && new_ball_pos_x < -312.0f && delta_x > 0.0f) {
     float temp_delta_for_update = delta * (312.0f - fabs(ball_pos_x)) / delta_x;
+
     if (temp_delta_for_update < delta_for_update) {
       float temp_ball_pos_y = ball_pos_y + (ball_speed_y * temp_delta_for_update);
       float ball_distance = fabs(fabs(paddle1 + 400.0f) - fabs(temp_ball_pos_y + 400.0f));
-      /*
-      std::cout << "    ball: " << ball_pos_y << " + (" << ball_speed_y << " * " << temp_delta_for_update << ") = " << temp_ball_pos_y << " (" << int(temp_ball_pos_y) << ")\n";
-      std::cout << "  paddle: " << paddle1 << " (" << int(paddle1) << ")\n";
-      std::cout << "distance: " << ball_distance << "\n";
-      */
+
       if (ball_distance < 40.0f) {
         delta_for_update = temp_delta_for_update;
         new_angle = 180.0f - ball_angle_;
+
+        if (ball_pos_y < paddle1) {
+          new_angle -= 0.8f * ball_distance;
+        }
+        else if (ball_pos_y > paddle1) {
+          new_angle += 0.8f * ball_distance;
+        }
+
+        if (new_angle < -60.0f) {
+          new_angle = -60.0f;
+        }
+        else if (new_angle > 60.0f) {
+          new_angle = 60.0f;
+        }
+
         collision = true;
       }
     }
   }
   if (ball_pos_x <= 312.0f && new_ball_pos_x > 312.0f && delta_x > 0.0f) {
     float temp_delta_for_update = delta * (312.0f - fabs(ball_pos_x)) / delta_x;
+
     if (temp_delta_for_update < delta_for_update) {
       float temp_ball_pos_y = ball_pos_y + (ball_speed_y * temp_delta_for_update);
       float ball_distance = fabs(fabs(paddle2 + 400.0f) - fabs(temp_ball_pos_y + 400.0f));
+
       if (ball_distance < 40.0f) {
         delta_for_update = temp_delta_for_update;
         new_angle = 180.0f - ball_angle_;
+
+        if (ball_pos_y < paddle2) {
+          new_angle += 0.8f * ball_distance;
+        }
+        else if (ball_pos_y > paddle2) {
+          new_angle -= 0.8f * ball_distance;
+        }
+
+        if (new_angle > -120.0f && new_angle < 0.0f) {
+          new_angle = -120.0f;
+        }
+        else if (new_angle > 0.0f && new_angle < 120.0f) {
+          new_angle = 120.0f;
+        }
+
         collision = true;
       }
     }
   }
   if (ball_pos_y >= -224.0f && new_ball_pos_y < -224.0f && delta_y > 0.0f) {
     float temp_delta_for_update = delta * (224.0f - fabs(ball_pos_y)) / delta_y;
+
     if (temp_delta_for_update < delta_for_update) {
       delta_for_update = temp_delta_for_update;
       new_angle = 360.0f - ball_angle_;
@@ -138,6 +167,7 @@ float PlayState::update_ball_pos(float delta)
   }
   if (ball_pos_y <= 224.0f && new_ball_pos_y > 224.0f && delta_y > 0.0f) {
     float temp_delta_for_update = delta * (224.0f - fabs(ball_pos_y)) / delta_y;
+
     if (temp_delta_for_update < delta_for_update) {
       delta_for_update = temp_delta_for_update;
       new_angle = 360.0f - ball_angle_;
@@ -145,20 +175,13 @@ float PlayState::update_ball_pos(float delta)
     }
   }
 
-  //std::cout << "delta_for_update: " << delta_for_update << "\n";
-
   ball_pos_x += ball_speed_x * delta_for_update;
   ball_pos_y += ball_speed_y * delta_for_update;
-
-  //std::cout << "new x: " << ball_pos_x << "; new y: " << ball_pos_y << "\n";
 
   if (collision) {
     angle(new_angle);
     compute();
   }
-
-  // computer paddle
-  paddle2 += ((ball_pos_y + 300.0f) - (paddle2 + 300.0f)) * pow((ball_pos_x + 400.0f) / 1200.0f, 2.5f);
 
   return delta - delta_for_update;
 }

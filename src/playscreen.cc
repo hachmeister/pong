@@ -32,8 +32,8 @@ void PlayScreen::init(Engine* engine)
   SDL_WarpMouse(400, 300);
   SDL_WM_GrabInput(SDL_GRAB_ON);
 
-  state_.speed(500.0f);
-  state_.angle(195.0f);
+  state_.speed(750.0f);
+  state_.angle(0.0f);
 }
 
 void PlayScreen::handle_input()
@@ -55,12 +55,6 @@ void PlayScreen::handle_input()
       }
       case SDL_MOUSEMOTION: {
         SDL_MouseMotionEvent* motion = &event.motion;
-        /*
-        state_.ball_pos_x = motion->x - 400.0f;
-        state_.ball_pos_y = motion->y - 300.0f;
-        std::cout << "  ball: " << state_.ball_pos_x << " (" << int(state_.ball_pos_x) << "), " << state_.ball_pos_y << " (" << int(state_.ball_pos_y) << ")\n";
-        std::cout << "paddle: " << state_.paddle1 << " (" << int(state_.paddle1) << ")\n";
-        */
         if (motion->y < 100) {
           state_.paddle1 = -200;
         } else if (motion->y > 500) {
@@ -80,12 +74,6 @@ void PlayScreen::handle_input()
 void PlayScreen::update(float delta)
 {
   state_.update(delta);
-
-  /*
-  if (state_.ball_pos_y < -224.0f) {
-    engine_->quit();
-  }
-  */
 }
 
 void PlayScreen::display(float delta, float interpolation)
