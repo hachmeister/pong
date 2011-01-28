@@ -9,7 +9,8 @@
 
 PlayScreen::PlayScreen()
   : engine_(0),
-    screen_(0)
+    screen_(0),
+    time(0.0)
 {
 }
 
@@ -73,6 +74,13 @@ void PlayScreen::handle_input()
 
 void PlayScreen::update(float delta)
 {
+  time += delta;
+  float new_speed = 750.0f + (50.0f * int(time));
+  if (new_speed != state_.speed()) {
+    std::cout << "new speed: " << new_speed << "\n";
+    state_.speed(new_speed);
+  }
+
   state_.update(delta);
 }
 

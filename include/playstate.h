@@ -16,7 +16,11 @@ public:
 
   void speed(float speed);
 
+  float speed();
+
   void angle(float angle);
+
+  float angle();
 
   int paddle1;
 

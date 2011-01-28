@@ -29,6 +29,8 @@ private:
   SDL_Surface* playfield_;
 
   PlayState state_;
+
+  float time;
 };
 
 #endif

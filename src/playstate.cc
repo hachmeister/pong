@@ -44,10 +44,23 @@ void PlayState::update(float delta)
 
   // computer paddle
   if (ball_speed_x > 0.0f) {
-    paddle2 += ((ball_pos_y + 300.0f) - (paddle2 + 300.0f)) * 7.0f * pow((ball_pos_x + 400.0f) / 1200.0f, 2.5f);
+    float delta_move = ((ball_pos_y + 300.0f) - (paddle2 + 300.0f)) * 7.0f * pow((ball_pos_x + 400.0f) / 1200.0f, 2.5f);
+    if (delta_move > 20) {
+      delta_move = 25;
+    }
+    else if (delta_move < -20) {
+      delta_move = -25;
+    }
+    paddle2 += delta_move;
   }
   else {
     paddle2 += (300.0f - (paddle2 + 300.0f)) * pow(400.0f / 1200.0f, 3.0f);
+  }
+
+  if (paddle2 < -200.0f) {
+    paddle2 = -200.0f;
+  } else if (paddle2 > 200.0f) {
+    paddle2 = 200.0f;
   }
 
   float temp_delta = delta;
@@ -62,6 +75,11 @@ void PlayState::speed(float speed)
   has_changed_ = true;
 }
 
+float PlayState::speed()
+{
+  return ball_speed_;
+}
+
 void PlayState::angle(float angle)
 {
   while (angle < 0.0f) {
@@ -74,6 +92,11 @@ void PlayState::angle(float angle)
 
   ball_angle_ = angle;
   has_changed_ = true;
+}
+
+float PlayState::angle()
+{
+  return ball_angle_;
 }
 
 // private methods
