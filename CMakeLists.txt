@@ -28,7 +28,14 @@ set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/include
+  /home/karsten/apps/sdl-1.3.0-5421/include/SDL
+  /home/karsten/apps/sdl-ttf-2.0.10/include/SDL
   /usr/include/SDL
+)
+
+link_directories (
+  /home/karsten/apps/sdl-1.3.0-5421/lib
+  /home/karsten/apps/sdl-ttf-2.0.10/lib
 )
 
 set(HEADER_FILES
@@ -50,4 +57,5 @@ add_executable(pong
 target_link_libraries(pong
   ${SDL_LIBRARY}
   ${SDLIMAGE_LIBRARY}
+  SDL_ttf
 )

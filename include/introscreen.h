@@ -2,6 +2,7 @@
 #define INTROSCREEN_H
 
 #include <SDL.h>
+#include <SDL_ttf.h>
 
 #include "screen.h"
 
@@ -26,6 +27,10 @@ private:
   SDL_Surface* screen_;
 
   SDL_Surface* title_;
+  
+  TTF_Font* font_;
+  
+  TTF_Font* font_outline_;
 };
 
 #endif
