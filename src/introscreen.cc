@@ -16,6 +16,7 @@ IntroScreen::IntroScreen()
 IntroScreen::~IntroScreen()
 {
   SDL_FreeSurface(title_);
+  SDL_FreeSurface(text_);
 }
 
 void IntroScreen::init(Engine* engine)
@@ -23,9 +24,18 @@ void IntroScreen::init(Engine* engine)
   engine_ = engine;
   screen_ = engine_->get_screen();
 
-  SDL_Surface* title = IMG_Load("data/images/title.png");
-  title_ = SDL_DisplayFormat(title);
-  SDL_FreeSurface(title);
+  SDL_Surface* temp = IMG_Load("data/images/title.png");
+  title_ = SDL_DisplayFormat(temp);
+  SDL_FreeSurface(temp);
+
+  font_ = TTF_OpenFont("data/fonts/verdana.ttf", 32);
+  TTF_SetFontOutline(font_, 1);
+  SDL_Color white;
+  white.r = 255;
+  white.g = 255;
+  white.b = 255;
+  
+  text_ = TTF_RenderText_Blended(font_, "Test Text...", white);
 }
 
 void IntroScreen::handle_input()
@@ -65,6 +75,13 @@ void IntroScreen::display(float delta, float interpolation)
   rect.y = 0;
 
   SDL_BlitSurface(title_, NULL, screen_, &rect);
+
+  for (int i = 0; i < 20; i++) {
+    rect.x = 100 + 10 * i;
+    rect.y = 50 + 10 * i;
+
+    SDL_BlitSurface(text_, NULL, screen_, &rect);
+  }
 
   SDL_Flip(screen_);
 }
