@@ -28,11 +28,32 @@ void IntroScreen::init(Engine* engine)
   title_ = SDL_DisplayFormat(title);
   SDL_FreeSurface(title);
   
-  TTF_Init();
-  
-  font_ = TTF_OpenFont("data/fonts/Delicious-Roman.ttf", 20);
-  font_outline_ = TTF_OpenFont("data/fonts/Delicious-Roman.ttf", 20);
+  SDL_Color white = {0xFF, 0xFF, 0xFF};
+  SDL_Color black = {0x00, 0x00, 0x00};
+
+  font_ = TTF_OpenFont("data/fonts/Delicious-Roman.ttf", 96);
+  //SDL_Surface* fg_surface = TTF_RenderText_Blended(font_, "Pong", white);
+  SDL_Surface* fg_surface = TTF_RenderText_Blended(font_, "Hello World!", white);
+  SDL_SaveBMP(fg_surface, "foreground.bmp");
+
+  font_outline_ = TTF_OpenFont("data/fonts/Delicious-Roman.ttf", 96);
   TTF_SetFontOutline(font_outline_, 2);
+  //SDL_Surface* bg_surface = TTF_RenderText_Blended(font_outline_, "Pong", black);
+  SDL_Surface* bg_surface = TTF_RenderText_Blended(font_outline_, "Hello World!", black);
+  SDL_SaveBMP(bg_surface, "background.bmp");
+
+  SDL_Rect rect;
+  rect.x = 2;
+  rect.y = 2;
+  rect.w = fg_surface->w;
+  rect.h = fg_surface->h;
+  SDL_BlitSurface(fg_surface, NULL, bg_surface, &rect);
+  SDL_FreeSurface(fg_surface);
+
+  text_ = SDL_DisplayFormatAlpha(bg_surface);
+  SDL_SaveBMP(text_, "text.bmp");
+  //text_ = SDL_DisplayFormat(bg_surface);
+  SDL_FreeSurface(bg_surface);
 }
 
 void IntroScreen::handle_input()
@@ -73,43 +94,12 @@ void IntroScreen::display(float delta, float interpolation)
 
   SDL_BlitSurface(title_, NULL, screen_, &rect);
   
-  SDL_Color white = {0xFF, 0xFF, 0xFF};
-  SDL_Color black = {0x30, 0x30, 0x30};
-  SDL_Surface* bg_surface = TTF_RenderText_Blended(font_outline_, "Hello World!", black);
-  SDL_Surface* fg_surface = TTF_RenderText_Blended(font_, "Hello World!", white);
-  
-  rect.x = 2;
-  rect.y = 2;
-  rect.w = fg_surface->w;
-  rect.h = fg_surface->h;
-  
-  //SDL_SetSurfaceBlendMode(fg_surface, SDL_BLENDMODE_BLEND);
-  
-  SDL_BlitSurface(fg_surface, NULL, bg_surface, &rect);
-  
   rect.x = 230;
-  rect.y = 115;
-  rect.w = bg_surface->w;
-  rect.h = bg_surface->h;
+  rect.y = 50;
+  rect.w = text_->w;
+  rect.h = text_->h;
   
-  SDL_BlitSurface(bg_surface, NULL, screen_, &rect);
+  SDL_BlitSurface(text_, NULL, screen_, &rect);
   
-  /*rect.x = 231;
-  rect.y = 121;
-  rect.w = fg_surface->w;
-  rect.h = fg_surface->h;
-  
-  SDL_BlitSurface(fg_surface, NULL, screen_, &rect);*/
-  
-  SDL_FreeSurface(fg_surface);
-  SDL_FreeSurface(bg_surface);
-
-  for (int i = 0; i < 20; i++) {
-    rect.x = 100 + 10 * i;
-    rect.y = 50 + 10 * i;
-
-    SDL_BlitSurface(text_, NULL, screen_, &rect);
-  }
-
   SDL_Flip(screen_);
 }

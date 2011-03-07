@@ -31,6 +31,8 @@ private:
   TTF_Font* font_;
   
   TTF_Font* font_outline_;
+
+  SDL_Surface* text_;
 };
 
 #endif
