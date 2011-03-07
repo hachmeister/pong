@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include <SDL_ttf.h>
+
 #include "screen.h"
 #include "timer.h"
 
@@ -23,6 +25,8 @@ Engine::Engine()
   }
 
   SDL_WM_SetCaption("Pong", NULL);
+
+  TTF_Init();
 
   running_ = true;
 }
