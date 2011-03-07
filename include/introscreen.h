@@ -27,10 +27,10 @@ private:
   SDL_Surface* screen_;
 
   SDL_Surface* title_;
-
+  
   TTF_Font* font_;
-
-  SDL_Surface* text_;
+  
+  TTF_Font* font_outline_;
 };
 
 #endif

@@ -32,9 +32,9 @@ include_directories(
   /usr/include/SDL
 )
 
-link_directories (                                                                                                          
+link_directories (
   /home/karsten/apps/sdl_ttf-2.0.10/lib
-)                                                                                                                           
+)
 
 set(HEADER_FILES
 )
