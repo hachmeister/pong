@@ -29,8 +29,8 @@ void IntroScreen::init(Engine* engine)
   
   TTF_Init();
   
-  font_ = TTF_OpenFont("data/fonts/Delicious-Roman.ttf", 20);
-  font_outline_ = TTF_OpenFont("data/fonts/Delicious-Roman.ttf", 20);
+  font_ = TTF_OpenFont("data/fonts/Delicious-Roman.ttf", 16);
+  font_outline_ = TTF_OpenFont("data/fonts/Delicious-Roman.ttf", 16);
   TTF_SetFontOutline(font_outline_, 2);
 }
 
