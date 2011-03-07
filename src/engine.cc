@@ -16,15 +16,10 @@ Engine::Engine()
     std::cout << "Unable to initialize SDL: " << SDL_GetError() << "\n";
     return;
   }
-
-  screen_ = SDL_SetVideoMode(800, 600, 0, SDL_HWSURFACE | SDL_DOUBLEBUF);
-
-  if (screen_ == NULL) {
-    std::cout << "Unable to set video mode: " << SDL_GetError() << "\n";
-    return;
-  }
-
-  SDL_WM_SetCaption("Pong", NULL);
+  
+  window_ = SDL_CreateWindow("Pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, 0);
+  
+  renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED);
 
   TTF_Init();
 
@@ -99,7 +94,12 @@ void Engine::quit()
   running_ = false;
 }
 
-SDL_Surface* Engine::get_screen() const
+SDL_Window* Engine::get_window() const
 {
-  return screen_;
+  return window_;
+}
+
+SDL_Renderer* Engine::get_renderer() const
+{
+  return renderer_;
 }

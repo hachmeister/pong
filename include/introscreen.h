@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include <vector>
+
 #include "screen.h"
 
 class IntroScreen : public Screen
@@ -24,15 +26,18 @@ public:
 private:
   Engine* engine_;
 
-  SDL_Surface* screen_;
+  SDL_Renderer* renderer_;
 
-  SDL_Surface* title_;
+  SDL_Texture* title_;
   
   TTF_Font* font_;
   
   TTF_Font* font_outline_;
+  
+  int font_border_;
 
-  SDL_Surface* text_;
+  std::vector<SDL_Texture*> text_;
+  std::vector<SDL_Texture*> outline_;
 };
 
 #endif

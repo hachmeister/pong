@@ -23,10 +23,12 @@ public:
 
 private:
   Engine* engine_;
+  
+  SDL_Window* window_;
 
-  SDL_Surface* screen_;
+  SDL_Renderer* renderer_;
 
-  SDL_Surface* playfield_;
+  SDL_Texture* playfield_;
 
   PlayState state_;
 
