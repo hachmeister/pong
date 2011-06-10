@@ -1,6 +1,0 @@
-Since this is a different email address than the one on file,
-this makes it difficult to make sure you are who you say you
-are. What we could do is have you push a commit to one of your
-git repositories, so I know that this is actually you, and I
-will be able to update your email address and send you new login
-criteria.
